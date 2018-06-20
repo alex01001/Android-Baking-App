@@ -1,29 +1,76 @@
 package com.example.user.bakingapp.Model;
 
-import com.google.auto.value.AutoValue;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+//import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
-@AutoValue
-public abstract class Ingredient {
-    public abstract float quantity();
-    public abstract String measure();
-    public abstract String ingredient();
+public class Ingredient implements Parcelable {
+    @JsonProperty("quantity")
+    private int quantity;
+    @JsonProperty("measure")
+    private String measure;
+    @JsonProperty("ingredient")
+    private String ingredient;
 
-    public static Builder builder() {
-        return new AutoValue_Ingredient.Builder();
+    public Ingredient() {
+        this.quantity = 0;
+        this.measure = "";
+        this.ingredient = "";
     }
 
-    public static TypeAdapter<Ingredient> typeAdapter(Gson gson) {
-        return new AutoValue_Ingredient.GsonTypeAdapter(gson);
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    @AutoValue.Builder
-    public abstract static class Builder {
-        public abstract Builder quantity(float quantity);
-        public abstract Builder measure(String measure);
-        public abstract Builder ingredient(String ingredient);
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.quantity);
+        dest.writeString(this.measure);
+        dest.writeString(this.ingredient);
+    }
 
-        public abstract Ingredient build();
+    protected Ingredient(Parcel in) {
+        this.quantity = in.readInt();
+        this.measure = in.readString();
+        this.ingredient = in.readString();
+    }
+
+    public static final Parcelable.Creator<Ingredient> CREATOR = new Parcelable.Creator<Ingredient>() {
+        @Override
+        public Ingredient createFromParcel(Parcel source) {
+            return new Ingredient(source);
+        }
+
+        @Override
+        public Ingredient[] newArray(int size) {
+            return new Ingredient[size];
+        }
+    };
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public String getMeasure() {
+        return measure;
+    }
+
+    public String getIngredient() {
+        return ingredient;
+    }
+
+    @Override
+    public String toString() {
+        return "Ingredient{" +
+                "quantity=" + quantity +
+                ", measure='" + measure + '\'' +
+                ", ingredient='" + ingredient + '\'' +
+                '}';
     }
 }

@@ -1,38 +1,140 @@
 package com.example.user.bakingapp.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Base64;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.google.auto.value.AutoValue;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.google.auto.value.AutoValue;
+//import com.google.gson.Gson;
 
-import com.google.gson.TypeAdapter;
+//import com.google.gson.TypeAdapter;
+import com.orhanobut.logger.Logger;
 
-@AutoValue
-public abstract class Recipe {
-    public abstract int id();
-    public abstract String name();
-    public abstract List<Ingredient> ingredients();
-    public abstract List<Step> steps();
-    public abstract int servings();
-    public abstract String image();
+public class Recipe implements Parcelable {
+    @JsonProperty("image")
+    private String image;
+    @JsonProperty("servings")
+    private int servings;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("ingredients")
+    private List<Ingredient> ingredients;
+    @JsonProperty("id")
+    private int id;
+    @JsonProperty("steps")
+    private List<Step> steps;
 
-    public static Builder builder() {
-        return new AutoValue_Recipe.Builder();
+    public Recipe() {
+        this.image = "";
+        this.servings = 0;
+        this.name = "";
+        this.ingredients = new ArrayList<>();
+        this.id = 0;
+        this.steps = new ArrayList<>();
     }
 
-    public static TypeAdapter<Recipe> typeAdapter(Gson gson) {
-        return new AutoValue_Recipe.GsonTypeAdapter(gson);
+    // Parcelable
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    @AutoValue.Builder
-    public abstract static class Builder {
-        public abstract Builder id(int id);
-        public abstract Builder name(String name);
-        public abstract Builder ingredients(List<Ingredient> ingredients);
-        public abstract Builder steps(List<Step> steps);
-        public abstract Builder servings(int servings);
-        public abstract Builder image(String image);
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.image);
+        dest.writeInt(this.servings);
+        dest.writeString(this.name);
+        dest.writeList(this.ingredients);
+        dest.writeInt(this.id);
+        dest.writeList(this.steps);
+    }
 
-        public abstract Recipe build();
+    protected Recipe(Parcel in) {
+        this.image = in.readString();
+        this.servings = in.readInt();
+        this.name = in.readString();
+        this.ingredients = new ArrayList<>();
+        in.readList(this.ingredients, Ingredient.class.getClassLoader());
+        this.id = in.readInt();
+        this.steps = new ArrayList<>();
+        in.readList(this.steps, Step.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel source) {
+            return new Recipe(source);
+        }
+
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
+
+    // Getters
+    public String getImage() {
+        return image;
+    }
+
+    public int getServings() {
+        return servings;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public List<Step> getSteps() {
+        return steps;
+    }
+
+    public static String toBase64String(Recipe recipe) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return Base64.encodeToString(mapper.writeValueAsBytes(recipe), 0);
+        } catch (JsonProcessingException e) {
+            Logger.e(e.getMessage());
+        }
+        return null;
+    }
+
+    public static Recipe fromBase64(String encoded) {
+        if (!"".equals(encoded)) {
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                return mapper.readValue(Base64.decode(encoded, 0), Recipe.class);
+            } catch (IOException e) {
+                Logger.e(e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "image='" + image + '\'' +
+                ", servings=" + servings +
+                ", name='" + name + '\'' +
+                ", ingredients=" + ingredients +
+                ", id=" + id +
+                ", steps=" + steps +
+                '}';
     }
 }

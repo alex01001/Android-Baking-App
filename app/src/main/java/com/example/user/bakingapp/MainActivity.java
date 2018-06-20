@@ -35,7 +35,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.user.bakingapp.Model.Ingredient;
 import com.example.user.bakingapp.Model.Recipe;
+import com.example.user.bakingapp.Model.Step;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -113,10 +115,12 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
 
     private void makeSearchQuery() {
         if(isOnline()) {
+            Log.i("ddd", getResources().getString(R.string.recipies_url));
             URL MovieUrl = NetworkTools.buildUrl(this.getResources().getString(R.string.recipies_url));
             String searchResults = null;
             new BakingQueryTask().execute(MovieUrl);
         }else {
+            Log.i("ddd", "is not online ");
             showErrorMessage();
         }
     }
@@ -147,29 +151,85 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
 
         @Override
         protected void onPostExecute(String s) {
+            Log.i("ddd", "onPostExecute: " +s);
             if(s==null){
                 showErrorMessage();
                 return;
             }
             // parsing the response.
             recipeList = new ArrayList<>();
+
 //            outputArraysLength = 0;
 
 
-//            JSONArray a = null;
-//            try {
-//                a = new JSONArray(s);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//            int l = a.length();
-//            for(int i = 0; i < l; i++) {
-//                try {
-//                    Log.i(i + "  ttrr", a.getString(i));
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
+            JSONArray a = null;
+            try {
+                a = new JSONArray(s);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            int l = a.length();
+            for(int j = 0; j < l; j++) {
+                try {
+                    Log.i(j + "  ddd", a.getString(j));
+                    int recipeId;
+                    String recipeName;
+                    ArrayList<Ingredient> ingredients = new ArrayList<>();
+                    ArrayList<Step> steps = new ArrayList<>();
+                    String cs = a.getString(j);
+
+                    recipeId = cs.getInt("id");
+                    recipeName = cs.getString("name");
+
+                    JSONObject recipeJSON;
+                    JSONArray ingredientsJSON;
+
+                    try {
+                        ingredientsJSON = cs.getJSONArray("ingredients");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+
+                    for (int i=0; i<ingredientsJSON.length(); i++) {
+                        try {
+                            JSONObject movieItem =  ingredientsJSON.getJSONObject(i);
+                            Ingredient movie = new Ingredient();
+//                            movie.setVoteCount(movieItem.getInt("vote_count"));
+//                            movie.setId(movieItem.getInt("id"));
+//                            movie.setVideo(movieItem.getBoolean("video"));
+//                            movie.setVoteAverage(movieItem.getDouble("vote_average"));
+//                            movie.setTitle(movieItem.getString("title"));
+//                            movie.setPopularity(movieItem.getDouble("popularity"));
+//                            movie.setPosterPath(movieItem.getString("poster_path"));
+//                            movie.setOriginalLanguage(movieItem.getString("original_language"));
+//                            movie.setOriginalTitle(movieItem.getString("original_title"));
+//
+//                            List<Integer> genIDs = new ArrayList<Integer>();
+//                            JSONArray genre_ids = movieItem.getJSONArray("genre_ids");
+//                            for (int j=0; j<genre_ids.length(); j++) {
+//                                genIDs.add(genre_ids.getInt(j));
+//                            }
+//                            movie.setGenreIds(genIDs);
+//                            movie.setBackdropPath(movieItem.getString("backdrop_path"));
+//                            movie.setAdult(movieItem.getBoolean("adult"));
+//                            movie.setOverview(movieItem.getString("overview"));
+//                            movie.setPosterPath(movieItem.getString("poster_path"));
+//                            movie.setReleaseDate(movieItem.getString("release_date"));
+//                            movieList.add(movie);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
 //            if(s!=null && !s.equals("")) {
 //                JSONObject recipeJSON;

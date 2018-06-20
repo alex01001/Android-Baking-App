@@ -1,33 +1,97 @@
 package com.example.user.bakingapp.Model;
 
-import com.google.auto.value.AutoValue;
-import com.google.gson.Gson;
-import com.google.gson.TypeAdapter;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-@AutoValue
-public abstract class Step {
-    public abstract int id();
-    public abstract String shortDescription();
-    public abstract String description();
-    public abstract String videoURL();
-    public abstract String thumbnailURL();
+import com.fasterxml.jackson.annotation.JsonProperty;
+//import com.google.auto.value.AutoValue;
+//import com.google.gson.Gson;
+//import com.google.gson.TypeAdapter;
 
-    public static Builder builder() {
-        return new AutoValue_Step.Builder();
+public class Step implements Parcelable {
+    @JsonProperty("videoURL")
+    private String videoURL;
+    @JsonProperty("description")
+    private String description;
+    @JsonProperty("id")
+    private int id;
+    @JsonProperty("shortDescription")
+    private String shortDescription;
+    @JsonProperty("thumbnailURL")
+    private String thumbnailURL;
+
+    public Step() {
+        this.videoURL = "";
+        this.description = "";
+        this.id = 0;
+        this.shortDescription = "";
+        this.thumbnailURL = "";
     }
 
-    public static TypeAdapter<Step> typeAdapter(Gson gson) {
-        return new AutoValue_Step.GsonTypeAdapter(gson);
+    // Parcelable
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    @AutoValue.Builder
-    public abstract static class Builder {
-        public abstract Builder id(int id);
-        public abstract Builder shortDescription(String shortDescription);
-        public abstract Builder description(String description);
-        public abstract Builder videoURL(String videoURL);
-        public abstract Builder thumbnailURL(String thumbnailURL);
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.videoURL);
+        dest.writeString(this.description);
+        dest.writeInt(this.id);
+        dest.writeString(this.shortDescription);
+        dest.writeString(this.thumbnailURL);
+    }
 
-        public abstract Step build();
+    protected Step(Parcel in) {
+        this.videoURL = in.readString();
+        this.description = in.readString();
+        this.id = in.readInt();
+        this.shortDescription = in.readString();
+        this.thumbnailURL = in.readString();
+    }
+
+    public static final Parcelable.Creator<Step> CREATOR = new Parcelable.Creator<Step>() {
+        @Override
+        public Step createFromParcel(Parcel source) {
+            return new Step(source);
+        }
+
+        @Override
+        public Step[] newArray(int size) {
+            return new Step[size];
+        }
+    };
+
+    // Getters
+    public String getVideoURL() {
+        return videoURL;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public String getThumbnailURL() {
+        return thumbnailURL;
+    }
+
+    @Override
+    public String toString() {
+        return "Step{" +
+                "videoURL='" + videoURL + '\'' +
+                ", description='" + description + '\'' +
+                ", id=" + id +
+                ", shortDescription='" + shortDescription + '\'' +
+                ", thumbnailURL='" + thumbnailURL + '\'' +
+                '}';
     }
 }

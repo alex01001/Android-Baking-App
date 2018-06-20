@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Baking App</string>
-    <string name="recipies_url">http://go.udacity.com/android-baking-app-json</string>
+    <string name="recipies_url">https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json</string>
     <string name="errorMessage">Failed to load. Please, check your Internet connection and try again. </string>
 
 </resources>

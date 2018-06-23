@@ -79,7 +79,7 @@ public class Recipe implements Parcelable {
         }
     };
 
-    // Getters
+
     public String getImage() {
         return image;
     }

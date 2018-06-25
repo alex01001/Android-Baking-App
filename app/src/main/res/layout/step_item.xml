@@ -13,6 +13,7 @@
 
     <TextView
         android:id="@+id/tv_step_description"
+        android:text="Recipe step"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"

@@ -6,30 +6,50 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.user.bakingapp.Model.Recipe;
+import com.example.user.bakingapp.Model.Step;
 import com.example.user.bakingapp.adapters.StepsAdapter;
 import com.orhanobut.logger.Logger;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecipeDetailActivity extends AppCompatActivity implements StepsAdapter.StepClickListener{
-    public static final String RECIPE_KEY = "recipe_k";
+    public static final String RECIPE_KEY = "recipe";
+
+    @BindView(R.id.rv_steps_list) RecyclerView mRecyclerViewSteps;
 
 
-//    @BindView(R.id.iv_thumbnail)
+    private boolean mTwoPane;
+
+
+
+    //    @BindView(R.id.iv_thumbnail)
 //    ImageView dvThumbnail;
-    @BindView(R.id.tv_ingredients_description) TextView ingredientsDescription;
+//    @BindView(R.id.tv_ingredients_description) TextView ingredientsDescription;
+    @BindView(R.id.lv_ingredients) ListView ingredientsList;
+
 //    @BindView(R.id.tv_release_date) TextView dvReleaseDate;
 //    @BindView(R.id.tv_user_rating) TextView dvRating;
 //    @BindView(R.id.tv_overview) TextView dvOverview;
@@ -40,6 +60,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
 
     private StepsAdapter stepsAdapter;
     Recipe recipe;
+
+    public ArrayList<Step> stepList;
 
 
 //    @BindView(R.id.recipe_step_list)
@@ -55,16 +77,95 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.recipe_detailed_view);
-//
-//        ButterKnife.bind(this);
+        setContentView(R.layout.recipe_detailed_view);
 
-//        Intent intent = getIntent();
-//        if (intent.hasExtra("recipe")) {
-//            recipe = getIntent().getParcelableExtra("recipe");
-//            ingredientsDescription.setText(recipe.describeContents());
-//
+        ButterKnife.bind(this);
+
+        Intent intent = getIntent();
+        if (intent.hasExtra(RECIPE_KEY)) {
+            recipe = getIntent().getParcelableExtra(RECIPE_KEY);
+        }
+        else{
+            finish();
+        }
+
+
+        //ingredientsDescription.setText(recipe.toString());
+        IngredientsAdapter ingredientsAdapter = new IngredientsAdapter();
+        ingredientsList.setAdapter(ingredientsAdapter);
+
+        StepsAdapter stepsAdapter = new StepsAdapter(getBaseContext(), this);
+        mRecyclerViewSteps.setAdapter(stepsAdapter);
+        mRecyclerViewSteps.setLayoutManager(new LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, false));
+        stepList = new ArrayList<Step>(recipe.getSteps());
+//        stepList = new ArrayList<>();
+//        stepList.add(recipe.getSteps().get(0));
+        stepsAdapter.setStepsData(stepList);
+
+
+
+//        ListView.LayoutParams mParam = new ListView.LayoutParams((int)(ListView.LayoutParams.MATCH_PARENT),(int)(ListView.LayoutParams.WRAP_CONTENT));
+//        ingredientsList.setLayoutParams(mParam);
+        //ingredientsList.requestLayout();
+
+//        ViewGroup.LayoutParams params = ingredientsList.getLayoutParams();
+////        params.height = ListView.LayoutParams.WRAP_CONTENT;
+//        params.height = params.height * ingredientsList.getCount();
+//        ingredientsList.setLayoutParams(params);
+//        ingredientsList.requestLayout();
+
+
+        View listItem = (View) ingredientsList.getAdapter().getItem(0);
+
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(ingredientsList.getWidth(), View.MeasureSpec.AT_MOST);
+        ViewGroup.LayoutParams params = ingredientsList.getLayoutParams();
+        ViewGroup.LayoutParams paramsItem = listItem.getLayoutParams();
+
+//        listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+        params.height = paramsItem.height * ingredientsList.getCount() + (ingredientsList.getDividerHeight() * (ingredientsAdapter.getCount()));
+//        totalHeight += listItem.getMeasuredHeight();
+        ingredientsList.setLayoutParams(params);
+        ingredientsList.requestLayout();
+
+
+//        setListViewHeightBasedOnChildren(ingredientsList);
+
+
+//        int totalHeight = 0;
+//        int desiredWidth = View.MeasureSpec.makeMeasureSpec(ingredientsList.getWidth(), View.MeasureSpec.AT_MOST);
+//        for (int i = 0; i < ingredientsAdapter.getCount(); i++) {
+////            View listItem = ingredientsAdapter.getView(i, null, ingredientsList);
+////            View listItem = ingredientsAdapter.getView(i,null,ingredientsList);
+//            View listItem = (View) ingredientsList.getAdapter().getItem(i);
+//            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+////            totalHeight += listItem.getMeasuredHeight();
+//            totalHeight += listItem.getMeasuredHeight();
+//            Log.i("hhh", String.valueOf(totalHeight));
 //        }
+//
+//        ViewGroup.LayoutParams params = ingredientsList.getLayoutParams();
+//        params.height = totalHeight + (ingredientsList.getDividerHeight() * (ingredientsAdapter.getCount() - 1));
+////        params.height = 100;
+//        ingredientsList.setLayoutParams(params);
+//        ingredientsList.requestLayout();
+
+
+
+
+//        int totalHeight = 0;
+//        int desiredWidth = MeasureSpec.makeMeasureSpec(listView.getWidth(), MeasureSpec.AT_MOST);
+//        for (int i = 0; i < listAdapter.getCount(); i++) {
+//            View listItem = listAdapter.getView(i, null, listView);
+//            listItem.measure(desiredWidth, MeasureSpec.UNSPECIFIED);
+//            totalHeight += listItem.getMeasuredHeight();
+//        }
+//
+//        ViewGroup.LayoutParams params = listView.getLayoutParams();
+//        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+//        listView.setLayoutParams(params);
+//        listView.requestLayout();
+
 
 //        Bundle bundle = getIntent().getExtras();
 //        if (bundle != null && bundle.containsKey(RECIPE_KEY)) {
@@ -103,7 +204,64 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
 //        setupRecyclerView();
     }
 
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
 
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
+
+
+    class IngredientsAdapter extends BaseAdapter {
+
+
+        @Override
+        public int getCount() {
+            if(recipe==null) return 0;
+            return recipe.getIngredients().size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if( convertView == null ) {
+                convertView = getLayoutInflater().inflate(R.layout.ingredients_item, null);
+            }
+            TextView tvIngredient = (TextView) convertView.findViewById(R.id.tv_ingredient_item);
+            TextView tvMeasure = (TextView) convertView.findViewById(R.id.tv_ingredient_measure);
+            TextView tvQuant = (TextView) convertView.findViewById(R.id.tv_ingredient_quantity);
+            tvIngredient.setText((CharSequence) recipe.getIngredients().get(position).getIngredient());
+            tvMeasure.setText((CharSequence) recipe.getIngredients().get(position).getMeasure());
+            tvQuant.setText(String.valueOf(recipe.getIngredients().get(position).getQuantity()));
+
+            return convertView;
+        }
+    }
 //    @Override
 //    public boolean onSupportNavigateUp() {
 //        onBackPressed();

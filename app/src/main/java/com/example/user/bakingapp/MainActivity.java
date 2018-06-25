@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
         Log.i("zzz", "before: ");
         Class detActivity = RecipeDetailActivity.class;
         Log.i("zzz", "before0: ");
-        Intent intent = new Intent(context,detActivity);
+        Intent intent = new Intent(getApplicationContext(),detActivity);
 //        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,(View) posterImg, "sharedPoster");
         intent.putExtra("recipe", recipeList.get(ClickedItemIndex));
         Log.i("zzz", "before1: ");
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
 
         @Override
         protected void onPostExecute(String s) {
-            Log.i("ddd", "onPostExecute: " +s);
+//            Log.i("ddd", "onPostExecute: " +s);
             if(s==null){
                 showErrorMessage();
                 return;
@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
                         e.printStackTrace();
                     }
 
-                    Log.i("ggg", recipe.toString() );
+//                    Log.i("ggg", recipe.toString() );
                     recipeList.add(recipe);
 
                 } catch (JSONException e) {

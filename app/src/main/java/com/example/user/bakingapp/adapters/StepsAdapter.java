@@ -34,7 +34,7 @@ public class StepsAdapter extends RecyclerView.Adapter <StepsAdapter.MyViewHolde
 
     @Override
     public StepsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.recipe_item,parent,false);
+        View view = inflater.inflate(R.layout.step_item,parent,false);
         StepsAdapter.MyViewHolder holder = new StepsAdapter.MyViewHolder(view);
         return holder;
     }
@@ -61,7 +61,7 @@ public class StepsAdapter extends RecyclerView.Adapter <StepsAdapter.MyViewHolde
 //        }
 
     }
-    public void setRecipeData (List<Step> mData){
+    public void setStepsData (List<Step> mData){
         data = mData;
         notifyDataSetChanged();
     }

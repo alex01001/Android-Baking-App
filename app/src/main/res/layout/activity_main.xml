@@ -7,6 +7,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/gavrila"/>
 
         <TextView
             android:id="@+id/tv_error_message_display"
@@ -26,8 +30,7 @@
                     android:id="@+id/rv_recipes_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_margin="16dp"
                     android:visibility="visible"></android.support.v7.widget.RecyclerView>
 
         </android.support.v4.widget.SwipeRefreshLayout>

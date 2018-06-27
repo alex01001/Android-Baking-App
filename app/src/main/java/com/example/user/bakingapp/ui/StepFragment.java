@@ -24,7 +24,7 @@ public class StepFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_step, container, false);
         TextView stepText = (TextView) rootView.findViewById(R.id.tv_recipe_step);
-        stepText.setText("hello");
+       // stepText.setText("hello");
 
 
         return rootView;

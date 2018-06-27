@@ -43,6 +43,11 @@ public class StepsAdapter extends RecyclerView.Adapter <StepsAdapter.MyViewHolde
     public void onBindViewHolder(StepsAdapter.MyViewHolder holder, int position) {
         Step current = data.get(position);
         holder.stepDescription.setText(current.getDescription());
+        holder.stepShortDescription.setText(current.getShortDescription());
+        holder.stepNumber.setText(String.valueOf(current.getId()));
+
+//        holder.stepShortDescription.setText("bla");
+//        holder.stepNumber.setText("9");
 
 
         //        URL posterURL = NetworkTools.buildPosterUrl(current.getPosterPath());
@@ -75,17 +80,23 @@ public class StepsAdapter extends RecyclerView.Adapter <StepsAdapter.MyViewHolde
     class MyViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener{
         private TextView stepDescription;
+        private TextView stepNumber;
+        private TextView stepShortDescription;
+
 
         @Override
         public void onClick(View view) {
             int clickedPosition = getAdapterPosition();
             onClickListener.onStepItemClick(clickedPosition,stepDescription);
+
         }
 
 
         public MyViewHolder(View itemView) {
             super(itemView);
             stepDescription = (TextView) itemView.findViewById(R.id.tv_step_description);
+            stepShortDescription = (TextView) itemView.findViewById(R.id.tv_step_short_description);
+            stepNumber = (TextView) itemView.findViewById(R.id.tv_step_id);
             itemView.setOnClickListener(this);
         }
     }

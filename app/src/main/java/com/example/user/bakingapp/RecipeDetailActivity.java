@@ -1,5 +1,6 @@
 package com.example.user.bakingapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -25,8 +26,10 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.user.bakingapp.Model.Ingredient;
 import com.example.user.bakingapp.Model.Recipe;
 import com.example.user.bakingapp.Model.Step;
+import com.example.user.bakingapp.adapters.IngredientsAdapter;
 import com.example.user.bakingapp.adapters.StepsAdapter;
 import com.orhanobut.logger.Logger;
 
@@ -39,6 +42,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
     public static final String RECIPE_KEY = "recipe";
 
     @BindView(R.id.rv_steps_list) RecyclerView mRecyclerViewSteps;
+    @BindView(R.id.rv_ingredients_list) RecyclerView mRecyclerViewIngredients;
 
 
     private boolean mTwoPane;
@@ -48,7 +52,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
     //    @BindView(R.id.iv_thumbnail)
 //    ImageView dvThumbnail;
 //    @BindView(R.id.tv_ingredients_description) TextView ingredientsDescription;
-    @BindView(R.id.lv_ingredients) ListView ingredientsList;
+//    @BindView(R.id.lv_ingredients) ListView ingredientsList;
+    @BindView(R.id.tv_recipe_intro) TextView recipeIntro;
 
 //    @BindView(R.id.tv_release_date) TextView dvReleaseDate;
 //    @BindView(R.id.tv_user_rating) TextView dvRating;
@@ -62,6 +67,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
     Recipe recipe;
 
     public ArrayList<Step> stepList;
+    public ArrayList<Ingredient> ingredientsList;
 
 
 //    @BindView(R.id.recipe_step_list)
@@ -90,9 +96,18 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
         }
 
 
+        recipeIntro.setText("Hello my friend, let's make " + recipe.getName() +"!");
         //ingredientsDescription.setText(recipe.toString());
-        IngredientsAdapter ingredientsAdapter = new IngredientsAdapter();
-        ingredientsList.setAdapter(ingredientsAdapter);
+        IngredientsAdapter ingredientsAdapter = new IngredientsAdapter(getBaseContext());
+//        ingredientsList.setAdapter(ingredientsAdapter);
+
+
+//        StepsAdapter stepsAdapter = new StepsAdapter(getBaseContext(), this);
+        mRecyclerViewIngredients.setAdapter(ingredientsAdapter);
+        mRecyclerViewIngredients.setLayoutManager(new LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, false));
+        ingredientsList = new ArrayList<Ingredient>(recipe.getIngredients());
+        ingredientsAdapter.setStepsData(ingredientsList);
+
 
         StepsAdapter stepsAdapter = new StepsAdapter(getBaseContext(), this);
         mRecyclerViewSteps.setAdapter(stepsAdapter);
@@ -101,6 +116,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
 //        stepList = new ArrayList<>();
 //        stepList.add(recipe.getSteps().get(0));
         stepsAdapter.setStepsData(stepList);
+
+
+        Bundle arguments = new Bundle();
+        arguments.putParcelable(RecipeStepDetailFragment.STEP_KEY, recipe.getSteps().get(0));
+        RecipeStepDetailFragment fragment = new RecipeStepDetailFragment();
+        fragment.setArguments(arguments);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.recipe_step_detail_container, fragment)
+                .commit();
 
 
 
@@ -115,18 +139,18 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
 //        ingredientsList.requestLayout();
 
 
-        View listItem = (View) ingredientsList.getAdapter().getItem(0);
-
-        int totalHeight = 0;
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(ingredientsList.getWidth(), View.MeasureSpec.AT_MOST);
-        ViewGroup.LayoutParams params = ingredientsList.getLayoutParams();
-        ViewGroup.LayoutParams paramsItem = listItem.getLayoutParams();
-
-//        listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-        params.height = paramsItem.height * ingredientsList.getCount() + (ingredientsList.getDividerHeight() * (ingredientsAdapter.getCount()));
-//        totalHeight += listItem.getMeasuredHeight();
-        ingredientsList.setLayoutParams(params);
-        ingredientsList.requestLayout();
+//        View listItem = (View) ingredientsList.getAdapter().getItem(0);
+//
+//        int totalHeight = 0;
+//        int desiredWidth = View.MeasureSpec.makeMeasureSpec(ingredientsList.getWidth(), View.MeasureSpec.AT_MOST);
+//        ViewGroup.LayoutParams params = ingredientsList.getLayoutParams();
+////        ViewGroup.LayoutParams paramsItem = listItem.getLayoutParams();
+//
+////        listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+//        params.height = params.height * ingredientsList.getCount() + (ingredientsList.getDividerHeight() * (ingredientsAdapter.getCount()));
+////        totalHeight += listItem.getMeasuredHeight();
+//        ingredientsList.setLayoutParams(params);
+//        ingredientsList.requestLayout();
 
 
 //        setListViewHeightBasedOnChildren(ingredientsList);
@@ -226,42 +250,45 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
     }
 
 
-    class IngredientsAdapter extends BaseAdapter {
+//    class IngredientsAdapter extends BaseAdapter {
+//
+//
+//        @Override
+//        public int getCount() {
+//            if(recipe==null) return 0;
+//            return recipe.getIngredients().size();
+//        }
+//
+//        @Override
+//        public Object getItem(int position) {
+//
+//            return null;
+//        }
+//
+//        @Override
+//        public long getItemId(int position) {
+//            return 0;
+//        }
+//
+//
+//        @Override
+//        public View getView(int position, View convertView, ViewGroup parent) {
+//            if( convertView == null ) {
+//                convertView = getLayoutInflater().inflate(R.layout.ingredients_item, null);
+//            }
+//            TextView tvIngredient = (TextView) convertView.findViewById(R.id.tv_ingredient_item);
+//            TextView tvMeasure = (TextView) convertView.findViewById(R.id.tv_ingredient_measure);
+//            TextView tvQuant = (TextView) convertView.findViewById(R.id.tv_ingredient_quantity);
+//            tvIngredient.setText((CharSequence) recipe.getIngredients().get(position).getIngredient());
+//            tvMeasure.setText((CharSequence) recipe.getIngredients().get(position).getMeasure());
+//            tvQuant.setText(String.valueOf(recipe.getIngredients().get(position).getQuantity()));
+//
+//            return convertView;
+//        }
+//    }
 
 
-        @Override
-        public int getCount() {
-            if(recipe==null) return 0;
-            return recipe.getIngredients().size();
-        }
 
-        @Override
-        public Object getItem(int position) {
-
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if( convertView == null ) {
-                convertView = getLayoutInflater().inflate(R.layout.ingredients_item, null);
-            }
-            TextView tvIngredient = (TextView) convertView.findViewById(R.id.tv_ingredient_item);
-            TextView tvMeasure = (TextView) convertView.findViewById(R.id.tv_ingredient_measure);
-            TextView tvQuant = (TextView) convertView.findViewById(R.id.tv_ingredient_quantity);
-            tvIngredient.setText((CharSequence) recipe.getIngredients().get(position).getIngredient());
-            tvMeasure.setText((CharSequence) recipe.getIngredients().get(position).getMeasure());
-            tvQuant.setText(String.valueOf(recipe.getIngredients().get(position).getQuantity()));
-
-            return convertView;
-        }
-    }
 //    @Override
 //    public boolean onSupportNavigateUp() {
 //        onBackPressed();
@@ -322,6 +349,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
 
     @Override
     public void onStepItemClick(int ClickedItemIndex, TextView recipeName) {
+
+        Context context = this;
+        Class detActivity = StepDetailActivity.class;
+        Intent intent = new Intent(getApplicationContext(),detActivity);
+//        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,(View) posterImg, "sharedPoster");
+        intent.putExtra("recipe", recipe);
+        intent.putExtra("step", ClickedItemIndex);
+        startActivity(intent);
+
 
     }
 }

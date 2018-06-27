@@ -3,6 +3,7 @@ package com.example.user.bakingapp;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -14,6 +15,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -81,8 +83,17 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
         adapter = new RecipeAdapter(getBaseContext(), this);
         mRecyclerView.setAdapter(adapter);
 //        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+        if(isTablet(this)){
+            mRecyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(),3));
+        }else{
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-//        }
+        }
+
+        if(isTablet(this)){
+            mRecyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(),3));
+        }else{
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        }
 
         // avoid reloading the list from the internet on device rotate
 //        if(savedInstanceState!=null){
@@ -96,8 +107,15 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
 
 
 
+
+
     }
 
+    public boolean isTablet(Context context) {
+        boolean xlarge = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == 4);
+        boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
+        return (xlarge || large);
+    }
        // check if we are connected to a network
     public boolean isOnline() {
         android.net.ConnectivityManager cm =
@@ -144,15 +162,11 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
     @Override
     public void onRecipeItemClick(int ClickedItemIndex, TextView recipeName) {
         Context context = MainActivity.this;
-        Log.i("zzz", "before: ");
         Class detActivity = RecipeDetailActivity.class;
-        Log.i("zzz", "before0: ");
         Intent intent = new Intent(getApplicationContext(),detActivity);
 //        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,(View) posterImg, "sharedPoster");
         intent.putExtra("recipe", recipeList.get(ClickedItemIndex));
-        Log.i("zzz", "before1: ");
         startActivity(intent);
-        Log.i("zzz", "after ");
 
 //        Class detActivity = DetailActivity.class;
 //        Intent intent = new Intent(context,detActivity);

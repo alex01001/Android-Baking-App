@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:context=".MainActivity">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        tools:context=".MainActivity">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_view_ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    tools:context=".MainActivity">
+
+                    <TextView
+                        android:id="@+id/tv_recipe_intro2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="8dp"
+                        android:text="bla"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_recipe_intro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="8dp"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+
+                    <ImageView
+                        android:id="@+id/iv_gavrila"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/gavrilasmall" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="8dp"
+
+                        android:text="Ingredients:"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_ingredients_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:visibility="visible"></android.support.v7.widget.RecyclerView>
+
+                    <!--<ListView-->
+                    <!--android:id="@+id/lv_ingredients"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"></ListView>-->
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_steps_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_view_ingredients"
+                android:layout_margin="8dp"
+                android:visibility="visible"></android.support.v7.widget.RecyclerView>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/recipe_step_detail_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        tools:ignore="InconsistentLayout" />
+
+</LinearLayout>

@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name="RecipeDetailActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name="StepDetailActivity" android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

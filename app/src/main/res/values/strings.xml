@@ -4,5 +4,9 @@
     <string name="errorMessage">Failed to load. Please, check your Internet connection and try again. </string>
     <string name="recipe_intro">Let\'s make </string>
     <string name="step">Step %d</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="no_data">Recipes data not available.</string>
+    <string name="widget_recipe_key">widget_recipe_key</string>
 
 </resources>

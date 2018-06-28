@@ -7,8 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.user.bakingapp.Model.Recipe;
-import com.example.user.bakingapp.Model.Step;
+import com.example.user.bakingapp.model.Step;
 import com.example.user.bakingapp.R;
 
 import java.util.Collections;
@@ -45,6 +44,10 @@ public class StepsAdapter extends RecyclerView.Adapter <StepsAdapter.MyViewHolde
         holder.stepDescription.setText(current.getDescription());
         holder.stepShortDescription.setText(current.getShortDescription());
         holder.stepNumber.setText(String.valueOf(current.getId()));
+        if (current.getId()==0){
+            holder.stepNumber.setVisibility(View.GONE);
+        }
+
 
 //        holder.stepShortDescription.setText("bla");
 //        holder.stepNumber.setText("9");

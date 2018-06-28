@@ -1,12 +1,10 @@
 package com.example.user.bakingapp;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,9 +20,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.user.bakingapp.Model.Ingredient;
-import com.example.user.bakingapp.Model.Recipe;
-import com.example.user.bakingapp.Model.Step;
+import com.example.user.bakingapp.model.Ingredient;
+import com.example.user.bakingapp.model.Recipe;
+import com.example.user.bakingapp.model.Step;
+import com.example.user.bakingapp.widget.MyWidgetService;
 import com.example.user.bakingapp.adapters.RecipeAdapter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -105,6 +104,10 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
             makeSearchQuery();
 //        }
 
+
+//        if (Prefs.loadRecipe(this) == null) {
+
+//        }
 
 
 
@@ -250,6 +253,8 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
 
             adapter.setRecipeData(recipeList);
             showGrid();
+
+            MyWidgetService.updateWidget(getBaseContext(), recipeList.get(0));
         }
     }
 

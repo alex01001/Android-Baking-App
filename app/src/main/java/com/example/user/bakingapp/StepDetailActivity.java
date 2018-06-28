@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.example.user.bakingapp.Model.Recipe;
+import com.example.user.bakingapp.model.Recipe;
 import com.orhanobut.logger.Logger;
 
 import butterknife.BindView;

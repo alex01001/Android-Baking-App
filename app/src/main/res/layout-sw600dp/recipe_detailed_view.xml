@@ -11,8 +11,9 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="fill_parent"
+        android:layout_width="0dp"
         android:layout_height="fill_parent"
+        android:layout_weight="1"
         android:fillViewport="true"
         tools:context=".MainActivity">
 
@@ -40,15 +41,6 @@
                     android:orientation="vertical"
                     tools:context=".MainActivity">
 
-                    <TextView
-                        android:id="@+id/tv_recipe_intro2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_margin="8dp"
-                        android:text="bla"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_recipe_intro"
@@ -100,6 +92,15 @@
                 android:layout_below="@id/card_view_ingredients"
                 android:layout_margin="8dp"
                 android:visibility="visible"></android.support.v7.widget.RecyclerView>
+            <Switch
+                android:id="@+id/widget_switch"
+                android:text="Widget "
+                android:textColor="#f00"
+                android:textSize="25sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                />
 
         </RelativeLayout>
 

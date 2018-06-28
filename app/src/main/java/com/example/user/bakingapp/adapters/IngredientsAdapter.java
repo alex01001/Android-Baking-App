@@ -7,8 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.user.bakingapp.Model.Ingredient;
-import com.example.user.bakingapp.Model.Step;
+import com.example.user.bakingapp.model.Ingredient;
 import com.example.user.bakingapp.R;
 
 import java.util.Collections;

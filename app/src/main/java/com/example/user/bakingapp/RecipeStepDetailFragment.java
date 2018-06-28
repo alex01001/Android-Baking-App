@@ -6,15 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.user.bakingapp.Model.Step;
+import com.example.user.bakingapp.model.Step;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -29,6 +27,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.orhanobut.logger.Logger;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,6 +83,7 @@ public class RecipeStepDetailFragment extends Fragment {
 
         // Show thumbnail if url exists
         if (!mStep.getThumbnailURL().isEmpty()) {
+            Picasso.with(getContext()).load(mStep.getThumbnailURL()).fit().into(mIvThumbnail);
 //            GlideApp.with(this)
 //                    .load(mStep.getThumbnailURL())
 //                    .diskCacheStrategy(DiskCacheStrategy.ALL)

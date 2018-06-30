@@ -19,9 +19,10 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-
+        android.util.Log.i("wqq1", "updating widget");
         Recipe recipe = Prefs.loadRecipe(context);
         if (recipe != null) {
+            android.util.Log.i("wqq1", "updating widget2 " + recipe.getName() + " widget " + String.valueOf(appWidgetId));
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
             // Construct the RemoteViews object
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
@@ -44,6 +45,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
+        android.util.Log.i("wqq1", "onUpdate");
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
@@ -52,6 +54,7 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     public static void updateAppWidgets(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
+//            updateAppWidget(context, appWidgetManager, 0);
         }
     }
 

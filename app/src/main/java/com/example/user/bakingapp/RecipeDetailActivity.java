@@ -109,6 +109,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
         }else {
             twoPaneMode = false;
         }
+        android.util.Log.i("wqq1", "test");
+
+        MyWidgetService.updateWidget(getBaseContext(), recipe);
 
 
     }
@@ -150,9 +153,17 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        android.util.Log.i("wqq", "checked");
         if (isChecked){
+            android.util.Log.i("wqq", "checked2");
             MyWidgetService.updateWidget(this, recipe);
         }
+
+    }
+
+    public void onBtnClicked(){
+        android.util.Log.i("wqq", "checked3");
+        MyWidgetService.updateWidget(this, recipe);
 
     }
 

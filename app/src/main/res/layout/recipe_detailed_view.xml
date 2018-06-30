@@ -76,6 +76,12 @@
                     android:layout_gravity="center_horizontal"
                     android:visibility="visible"
                     />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_widget"
+                    android:text="update widget"
+                    android:onClick="onBtnClicked"/>
                 <!--<ListView-->
                     <!--android:id="@+id/lv_ingredients"-->
                     <!--android:layout_width="match_parent"-->

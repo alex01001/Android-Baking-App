@@ -12,11 +12,20 @@ import com.example.user.bakingapp.Prefs;
 public class MyWidgetService extends RemoteViewsService {
 
     public static void updateWidget(Context context, Recipe recipe) {
+        android.util.Log.i("wqq1", "MyWidgetService.updateWidget");
+
         Prefs.saveRecipe(context, recipe);
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, RecipeWidgetProvider.class));
+
+
+        android.util.Log.i("wqq1 component", String.valueOf(new ComponentName(context, RecipeWidgetProvider.class)));
+
+        android.util.Log.i("wqq1 ids", String.valueOf(appWidgetIds.length));
         RecipeWidgetProvider.updateAppWidgets(context, appWidgetManager, appWidgetIds);
+
+       // appWidgetManager.updateAppWidget(new android.content.ComponentName(getPackageName(),RecipeWidgetProvider.class.getName()));
     }
 
     @Override

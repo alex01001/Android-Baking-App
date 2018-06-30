@@ -178,7 +178,10 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
 //        startActivity(intent,optionsCompat.toBundle());
 
 
-    }
+    }public void onBtnClicked(View view) {
+        android.util.Log.i("wqq", "checked3");
+        MyWidgetService.updateWidget(this, recipeList.get(0));
+}
 
     public class BakingQueryTask extends AsyncTask<URL, Void, String> {
         @Override

@@ -10,14 +10,10 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
 public class GlobalApplication extends Application {
-    // The Idling Resource which will be null in production.
     @Nullable
     private RecipesIdlingResource mIdlingResource;
 
 
-    /**
-     * Only called from test, creates and returns a new {@link RecipesIdlingResource}.
-     */
     @VisibleForTesting
     @NonNull
     private IdlingResource initializeIdlingResource() {
@@ -29,7 +25,6 @@ public class GlobalApplication extends Application {
 
     public GlobalApplication() {
 
-        // The IdlingResource will be null in production.
         if (BuildConfig.DEBUG) {
             initializeIdlingResource();
         }
@@ -37,7 +32,6 @@ public class GlobalApplication extends Application {
         Logger.addLogAdapter(new AndroidLogAdapter() {
             @Override
             public boolean isLoggable(int priority, String tag) {
-                // Enable logging only on debug
                 return BuildConfig.DEBUG;
             }
         });

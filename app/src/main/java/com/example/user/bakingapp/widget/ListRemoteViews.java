@@ -4,8 +4,9 @@ import android.content.Context;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.example.user.bakingapp.Utils;
 import com.example.user.bakingapp.model.Recipe;
-import com.example.user.bakingapp.Prefs;
+
 import com.example.user.bakingapp.R;
 
 public class ListRemoteViews implements RemoteViewsService.RemoteViewsFactory {
@@ -23,7 +24,7 @@ public class ListRemoteViews implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public void onDataSetChanged() {
-        recipe = Prefs.loadRecipe(mContext);
+        recipe = Utils.loadRecipe(mContext);
     }
 
     @Override

@@ -6,13 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViewsService;
 
+import com.example.user.bakingapp.Utils;
 import com.example.user.bakingapp.model.Recipe;
-import com.example.user.bakingapp.Prefs;
+
 
 public class MyWidgetService extends RemoteViewsService {
 
     public static void updateWidget(Context context, Recipe recipe) {
-        Prefs.saveRecipe(context, recipe);
+        Utils.saveRecipe(context, recipe);
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, RecipeWidgetProvider.class));

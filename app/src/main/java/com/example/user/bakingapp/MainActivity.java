@@ -18,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.user.bakingapp.model.Ingredient;
@@ -42,9 +43,9 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements RecipeAdapter.RecipeItemClickListener {
 
     @BindView(R.id.tv_error_message_display) TextView errorMessageTextView;
-//    @BindView(R.id.pb_loading_indicator) ProgressBar mLoadingIndicator;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout mSwipeToRefresh;
     @BindView(R.id.rv_recipes_list) RecyclerView mRecyclerView;
+    @BindView(R.id.layout_main_screen) LinearLayout mainLayout;
 
     public ArrayList<Recipe> recipeList;
     private RecipeAdapter adapter;
@@ -57,12 +58,6 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
         ButterKnife.bind(this);
         adapter = new RecipeAdapter(getBaseContext(), this);
         mRecyclerView.setAdapter(adapter);
-//        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-        if(isTablet(this)){
-            mRecyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(),3));
-        }else{
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-        }
 
         if(isTablet(this)){
             mRecyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(),3));
@@ -70,18 +65,32 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         }
 
+        if(isTablet(this)){
+            mRecyclerView.setLayoutManager(new GridLayoutManager(getBaseContext(),3));
+        }else{
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        }
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            mainLayout.setBackgroundResource(R.drawable.backgtound);
+        }else{
+            mainLayout.setBackgroundResource(R.drawable.backgtound2);
+        }
         // avoid reloading the list from the internet on device rotate
-//        if(savedInstanceState!=null){
-//            recipeList = savedInstanceState.getParcelableArrayList("RECIPE_LIST");
-//            adapter.setMovieData(recipeList);
-//            showPosterGrid();
-//        }
-//        else{
+        if(savedInstanceState!=null){
+            recipeList = savedInstanceState.getParcelableArrayList("RECIPE_LIST");
+            adapter.setRecipeData(recipeList);
+            showGrid();
+        }
+        else{
             makeSearchQuery();
-//        }
+        }
 
     }
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("RECIPE_LIST", recipeList);
+    }
     public boolean isTablet(Context context) {
         boolean xlarge = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == 4);
         boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
@@ -99,26 +108,23 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
         mRecyclerView.setVisibility(View.VISIBLE);
         errorMessageTextView.setVisibility(View.GONE);
         mSwipeToRefresh.setRefreshing(false);
-//        mLoadingIndicator.setVisibility(View.GONE);
     }
     // shows error when unable to load data
     private void showErrorMessage(){
         mRecyclerView.setVisibility(View.GONE);
         errorMessageTextView.setVisibility(View.VISIBLE);
         mSwipeToRefresh.setRefreshing(false);
-//        mLoadingIndicator.setVisibility(View.GONE);
     }
     private void showLoadingIndicator(){
         mRecyclerView.setVisibility(View.GONE);
         errorMessageTextView.setVisibility(View.GONE);
         mSwipeToRefresh.setRefreshing(true);
-//        mLoadingIndicator.setVisibility(View.VISIBLE);
     }
 
 
     private void makeSearchQuery() {
         if(isOnline()) {
-            URL MovieUrl = NetworkTools.buildUrl(this.getResources().getString(R.string.recipies_url));
+            URL MovieUrl = Utils.buildUrl(this.getResources().getString(R.string.recipies_url));
             String searchResults = null;
             new BakingQueryTask().execute(MovieUrl);
         }else {
@@ -133,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
         Context context = MainActivity.this;
         Class detActivity = RecipeDetailActivity.class;
         Intent intent = new Intent(getApplicationContext(),detActivity);
-//        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,(View) posterImg, "sharedPoster");
         intent.putExtra("recipe", recipeList.get(ClickedItemIndex));
         startActivity(intent);
     }
@@ -151,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
             URL searchUrl = urls[0];
             String searchResults = null;
             try {
-                searchResults = NetworkTools.getResponseFromHttpUrl(searchUrl);
+                searchResults = Utils.getResponseFromHttpUrl(searchUrl);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -160,16 +165,12 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
 
         @Override
         protected void onPostExecute(String s) {
-//            Log.i("ddd", "onPostExecute: " +s);
             if(s==null){
                 showErrorMessage();
                 return;
             }
             // parsing the response.
             recipeList = new ArrayList<>();
-
-//            outputArraysLength = 0;
-
 
             JSONArray a = null;
             try {
@@ -180,19 +181,11 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
             int l = a.length();
             for(int j = 0; j < l; j++) {
                 try {
-                    Log.i(j + "  ddd", a.getString(j));
-                    int recipeId;
-                    String recipeName;
                     ArrayList<Ingredient> ingredients = new ArrayList<>();
                     ArrayList<Step> steps = new ArrayList<>();
                     JSONObject cs = a.getJSONObject(j);
                     String str = a.getString(j);
 
-                    recipeId = cs.getInt("id");
-                    recipeName = cs.getString("name");
-
-                    JSONObject recipeJSON;
-                    JSONArray ingredientsJSON;
                     Recipe recipe = new Recipe();
 
                     ObjectMapper mapper = new ObjectMapper();
@@ -201,19 +194,13 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-//                    Log.i("ggg", recipe.toString() );
                     recipeList.add(recipe);
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-
             adapter.setRecipeData(recipeList);
             showGrid();
-
-            MyWidgetService.updateWidget(getBaseContext(), recipeList.get(0));
         }
     }
 }

@@ -24,47 +24,20 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RecipeDetailActivity extends AppCompatActivity implements StepsAdapter.StepClickListener, Switch.OnCheckedChangeListener{
+public class RecipeDetailActivity extends AppCompatActivity implements StepsAdapter.StepClickListener {
     public static final String RECIPE_KEY = "recipe";
 
     @BindView(R.id.rv_steps_list) RecyclerView mRecyclerViewSteps;
     @BindView(R.id.rv_ingredients_list) RecyclerView mRecyclerViewIngredients;
     @BindView(R.id.tv_recipe_intro) TextView recipeIntro;
 
-
     private boolean twoPaneMode;
-
-
-
-//        @BindView(R.id.iv_thumbnail)
-//        ImageView dvThumbnail;
-//    @BindView(R.id.tv_ingredients_description) TextView ingredientsDescription;
-//    @BindView(R.id.lv_ingredients) ListView ingredientsList;
-
-//    @BindView(R.id.tv_release_date) TextView dvReleaseDate;
-//    @BindView(R.id.tv_user_rating) TextView dvRating;
-//    @BindView(R.id.tv_overview) TextView dvOverview;
-//    @BindView(R.id.btn_favorite)
-//    ImageButton favButton;
-//    @BindView(R.id.rv_trailersList) RecyclerView mRecyclerViewTrailers;
-//    @BindView(R.id.rv_reviewsList) RecyclerView mRecyclerViewReviews;
 
     private StepsAdapter stepsAdapter;
     Recipe recipe;
 
     public ArrayList<Step> stepList;
     public ArrayList<Ingredient> ingredientsList;
-
-
-//    @BindView(R.id.recipe_step_list)
-//    RecyclerView mRecyclerView;
-//
-//    @BindView(android.R.id.content)
-//    View mParentLayout;
-//
-//    private boolean mTwoPane;
-//
-//    private Recipe mRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,13 +55,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
         }
 
 
-        recipeIntro.setText(R.string.recipe_intro + recipe.getName() +"!");
-        //ingredientsDescription.setText(recipe.toString());
+        recipeIntro.setText(getResources().getString(R.string.recipe_intro) + " " + recipe.getName() +"!");
+
         IngredientsAdapter ingredientsAdapter = new IngredientsAdapter(getBaseContext());
-//        ingredientsList.setAdapter(ingredientsAdapter);
-
-
-//        StepsAdapter stepsAdapter = new StepsAdapter(getBaseContext(), this);
         mRecyclerViewIngredients.setAdapter(ingredientsAdapter);
         mRecyclerViewIngredients.setLayoutManager(new LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, false));
         ingredientsList = new ArrayList<Ingredient>(recipe.getIngredients());
@@ -99,8 +68,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
         mRecyclerViewSteps.setAdapter(stepsAdapter);
         mRecyclerViewSteps.setLayoutManager(new LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, false));
         stepList = new ArrayList<Step>(recipe.getSteps());
-//        stepList = new ArrayList<>();
-//        stepList.add(recipe.getSteps().get(0));
         stepsAdapter.setStepsData(stepList);
 
         if(isTablet(this)){
@@ -110,6 +77,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
             twoPaneMode = false;
         }
 
+        //update widget ingredients according to selected recipe
         MyWidgetService.updateWidget(getBaseContext(), recipe);
 
 
@@ -131,8 +99,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
         return (xlarge || large);
     }
 
-
-
     @Override
     public void onStepItemClick(int ClickedItemIndex, TextView recipeName) {
 
@@ -146,23 +112,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
             intent.putExtra("recipe", recipe);
             intent.putExtra("step", ClickedItemIndex);
             startActivity(intent);
-
         }
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        android.util.Log.i("wqq", "checked");
-        if (isChecked){
-            android.util.Log.i("wqq", "checked2");
-            MyWidgetService.updateWidget(this, recipe);
-        }
-    }
-
-    public void onBtnClicked(){
-        android.util.Log.i("wqq", "checked3");
-        MyWidgetService.updateWidget(this, recipe);
-
     }
 }
 

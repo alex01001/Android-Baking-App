@@ -43,13 +43,13 @@ public class RecipeStepDetailFragment extends Fragment {
 
 
     @BindView(R.id.exo_player_view)
-    SimpleExoPlayerView mExoPlayerView;
+    SimpleExoPlayerView exoPlayerView;
     @BindView(R.id.step_thumbnail_image)
     ImageView mIvThumbnail;
     @BindView(R.id.instruction_text)
     TextView mTvInstructions;
 
-    private SimpleExoPlayer mExoPlayer;
+    private SimpleExoPlayer exoPlayer;
     private Step mStep;
     private Unbinder unbinder;
 
@@ -71,24 +71,17 @@ public class RecipeStepDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recipe_step_detail, container, false);
+        unbinder = ButterKnife.bind(this, rootView);
 
         if (savedInstanceState != null && savedInstanceState.containsKey(POSITION_KEY)) {
             mCurrentPosition = savedInstanceState.getLong(POSITION_KEY);
             mPlayWhenReady = savedInstanceState.getBoolean(PLAY_WHEN_READY_KEY);
         }
 
-        unbinder = ButterKnife.bind(this, rootView);
-
         mTvInstructions.setText(mStep.getDescription());
 
-        // Show thumbnail if url exists
         if (!mStep.getThumbnailURL().isEmpty()) {
             Picasso.with(getContext()).load(mStep.getThumbnailURL()).fit().into(mIvThumbnail);
-//            GlideApp.with(this)
-//                    .load(mStep.getThumbnailURL())
-//                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                    .placeholder(R.drawable.ic_dinner)
-//                    .into(mIvThumbnail);
             mIvThumbnail.setVisibility(View.VISIBLE);
         }
 
@@ -101,7 +94,6 @@ public class RecipeStepDetailFragment extends Fragment {
         if (!TextUtils.isEmpty(mStep.getVideoURL()))
             initializePlayer(Uri.parse(mStep.getVideoURL()));
         else {
-            // Un- hide InstructionsContainer because in case of phone landscape is hidden
             mInstructionsContainer.setVisibility(View.VISIBLE);
         }
     }
@@ -117,7 +109,6 @@ public class RecipeStepDetailFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        Logger.d("onDestroyView");
     }
 
 
@@ -130,45 +121,34 @@ public class RecipeStepDetailFragment extends Fragment {
     }
 
     private void initializePlayer(Uri mediaUri) {
-        if (mExoPlayer == null) {
-            // Create a default TrackSelector
+        if (exoPlayer == null) {
             DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
             TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
             TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
-            // Create the player
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
+            exoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
 
-            // Bind the player to the view.
-            mExoPlayerView.setPlayer(mExoPlayer);
-            // Measures bandwidth during playback. Can be null if not required.
-            // Produces DataSource instances through which media data is loaded.
+            exoPlayerView.setPlayer(exoPlayer);
             DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), getString(R.string.app_name)), bandwidthMeter);
-            // This is the MediaSource representing the media to be played.
             MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mediaUri);
-            // Prepare the player with the source.
-            mExoPlayer.prepare(videoSource);
+            exoPlayer.prepare(videoSource);
 
-            // onRestore
             if (mCurrentPosition != 0)
-                mExoPlayer.seekTo(mCurrentPosition);
+                exoPlayer.seekTo(mCurrentPosition);
 
-            mExoPlayer.setPlayWhenReady(mPlayWhenReady);
-            mExoPlayerView.setVisibility(View.VISIBLE);
+            exoPlayer.setPlayWhenReady(mPlayWhenReady);
+            exoPlayerView.setVisibility(View.VISIBLE);
         }
     }
 
-    /**
-     * Release ExoPlayer.
-     */
     private void releasePlayer() {
-        if (mExoPlayer != null) {
-            mPlayWhenReady = mExoPlayer.getPlayWhenReady();
-            mCurrentPosition = mExoPlayer.getCurrentPosition();
+        if (exoPlayer != null) {
+            mPlayWhenReady = exoPlayer.getPlayWhenReady();
+            mCurrentPosition = exoPlayer.getCurrentPosition();
 
-            mExoPlayer.stop();
-            mExoPlayer.release();
-            mExoPlayer = null;
+            exoPlayer.stop();
+            exoPlayer.release();
+            exoPlayer = null;
         }
     }
 }

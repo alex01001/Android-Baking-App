@@ -8,15 +8,16 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.example.user.bakingapp.MainActivity;
+import com.example.user.bakingapp.Utils;
 import com.example.user.bakingapp.model.Recipe;
-import com.example.user.bakingapp.Prefs;
+
 import com.example.user.bakingapp.R;
 
 public class RecipeWidgetProvider extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-        Recipe recipe = Prefs.loadRecipe(context);
+        Recipe recipe = Utils.loadRecipe(context);
         if (recipe != null) {
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
 

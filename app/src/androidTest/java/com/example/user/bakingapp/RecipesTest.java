@@ -36,10 +36,8 @@ public class RecipesTest {
 
     @Before
     public void registerIdlingResource() {
-//        globalApplication = (GlobalApplication) activityTestRule.getActivity().getApplicationContext();
         globalApplication = new GlobalApplication();
         mIdlingResource =  globalApplication.getIdlingResource();
-        // Register Idling Resources
         IdlingRegistry.getInstance().register(mIdlingResource);
     }
 
@@ -51,70 +49,17 @@ public class RecipesTest {
     }
 
 
-
-    public static void getMeToRecipeInfo(int recipePosition) {
-        onView(withId(R.id.rv_recipes_list))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(recipePosition, click()));
-    }
-
-    public static void selectRecipeStep(int recipeStep) {
-        onView(withId(R.id.rv_steps_list))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(recipeStep, click()));
-    }
-
     @Test
     public void clickRecyclerViewItemHasIntentWithAKey() {
-        //Checks if the key is present
+        // this test checks if the recipe key is transferred to the recipe detail screen
         Intents.init();
-//        getMeToRecipeInfo(0);
         onView(withId(R.id.rv_recipes_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
         intended(hasExtraWithKey(RecipeDetailActivity.RECIPE_KEY));
         Intents.release();
 
-//        onView(withId(R.id.rv_steps_list)).perform(RecyclerViewActions.actionOnItemAtPosition(3, click()));
     }
 
-    @Test
-    public void clickOnRecyclerViewItem_opensRecipeDetailActivity() {
 
-        getMeToRecipeInfo(0);
-
-//        onView(withId(R.id.tv_ingredient_item))
-//                .check(matches(isDisplayed()));
-
-//        onView(withId(R.id.rv_steps_list))
-//                .check(matches(isDisplayed()));
-    }
-
-//    @Test
-//    public void clickOnRecyclerViewStepItem_opensRecipeStepActivity_orFragment() {
-//        getMeToRecipeInfo(0);
-//
-////        boolean twoPaneMode = globalApplication.getResources().getBoolean(R.bool.twoPaneMode);
-////        if (!twoPaneMode) {
-//        // Checks if the keys are present and the intent launched is RecipeStepDetailActivity
-//
-//        onView(withId(R.id.rv_steps_list)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
-//
-////        Intents.init();
-////        selectRecipeStep(1);
-////        intended(hasComponent(StepDetailActivity.class.getName()));
-////        intended(hasExtraWithKey(StepDetailActivity.RECIPE_KEY));
-////        intended(hasExtraWithKey(StepDetailActivity.STEP_SELECTED_KEY));
-////        Intents.release();
-//
-//        // Check TabLayout
-////        onView(withId(R.id.recipe_step_tab_layout))
-////                .check(matches(isCompletelyDisplayed()));
-//
-//
-//        //        } else {
-////            Navigation.selectRecipeStep(1);
-////
-////            onView(withId(R.id.exo_player_view))
-////                    .check(matches(isDisplayed()));
-////        }
-//    }
 
  }

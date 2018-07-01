@@ -38,30 +38,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-//import com.example.user.bakingapp.R;
-
-
-
-//public class MainActivity extends AppCompatActivity implements RecipesListFragment.OnRecipeClickListener {
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//
-//
-//    }
-//
-//    @Override
-//    public void onRecipeSelected(Recipe recipe) {
-//        Intent intent = new Intent(this, RecipeDetailActivity.class);
-//        intent.putExtra(RecipeDetailActivity.RECIPE_KEY, recipe);
-//        startActivity(intent);
-//    }
-//
-//}
-
-
 
 public class MainActivity extends AppCompatActivity implements RecipeAdapter.RecipeItemClickListener {
 
@@ -104,14 +80,6 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
             makeSearchQuery();
 //        }
 
-
-//        if (Prefs.loadRecipe(this) == null) {
-
-//        }
-
-
-
-
     }
 
     public boolean isTablet(Context context) {
@@ -150,12 +118,10 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
 
     private void makeSearchQuery() {
         if(isOnline()) {
-            Log.i("ddd", getResources().getString(R.string.recipies_url));
             URL MovieUrl = NetworkTools.buildUrl(this.getResources().getString(R.string.recipies_url));
             String searchResults = null;
             new BakingQueryTask().execute(MovieUrl);
         }else {
-            Log.i("ddd", "is not online ");
             showErrorMessage();
         }
     }
@@ -170,18 +136,8 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
 //        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,(View) posterImg, "sharedPoster");
         intent.putExtra("recipe", recipeList.get(ClickedItemIndex));
         startActivity(intent);
+    }
 
-//        Class detActivity = DetailActivity.class;
-//        Intent intent = new Intent(context,detActivity);
-//        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,(View) posterImg, "sharedPoster");
-//        intent.putExtra("movie", movieList.get(clickedItemIndex));
-//        startActivity(intent,optionsCompat.toBundle());
-
-
-    }public void onBtnClicked(View view) {
-        android.util.Log.i("wqq", "checked3");
-        MyWidgetService.updateWidget(this, recipeList.get(0));
-}
 
     public class BakingQueryTask extends AsyncTask<URL, Void, String> {
         @Override
@@ -260,8 +216,4 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
             MyWidgetService.updateWidget(getBaseContext(), recipeList.get(0));
         }
     }
-
-
-
-
 }

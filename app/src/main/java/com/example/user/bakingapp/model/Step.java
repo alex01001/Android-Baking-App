@@ -4,9 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-//import com.google.auto.value.AutoValue;
-//import com.google.gson.Gson;
-//import com.google.gson.TypeAdapter;
 
 public class Step implements Parcelable {
     @JsonProperty("videoURL")
@@ -28,7 +25,6 @@ public class Step implements Parcelable {
         this.thumbnailURL = "";
     }
 
-    // Parcelable
     @Override
     public int describeContents() {
         return 0;

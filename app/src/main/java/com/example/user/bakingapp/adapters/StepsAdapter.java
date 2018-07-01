@@ -47,27 +47,6 @@ public class StepsAdapter extends RecyclerView.Adapter <StepsAdapter.MyViewHolde
         if (current.getId()==0){
             holder.stepNumber.setVisibility(View.GONE);
         }
-
-
-//        holder.stepShortDescription.setText("bla");
-//        holder.stepNumber.setText("9");
-
-
-        //        URL posterURL = NetworkTools.buildPosterUrl(current.getPosterPath());
-//        Picasso.with(context).load(posterURL.toString()).fit().into(holder.posterImg);
-//        if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-//            ViewGroup.LayoutParams lp;
-//            lp = holder.posterImg.getLayoutParams();
-//            lp.height = 270* Resources.getSystem().getDisplayMetrics().widthPixels/(4*185)-16;
-//
-//        }
-//        else{
-//            ViewGroup.LayoutParams lp;
-//            lp = holder.posterImg.getLayoutParams();
-//            lp.height = 270*Resources.getSystem().getDisplayMetrics().widthPixels/(2*185)-16;
-//
-//        }
-
     }
     public void setStepsData (List<Step> mData){
         data = mData;

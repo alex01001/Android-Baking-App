@@ -15,20 +15,14 @@ import java.util.List;
 
 public class IngredientsAdapter  extends RecyclerView.Adapter <IngredientsAdapter.MyViewHolder>{
 
-//    final private StepsAdapter.StepClickListener onClickListener;
     private LayoutInflater inflater;
     List<Ingredient> data = Collections.emptyList();
 
     private Context context;
 
-//    public interface StepClickListener {
-//        void onStepItemClick(int ClickedItemIndex,TextView recipeName);
-//    }
-
     public IngredientsAdapter (Context tContext){
         context = tContext;
         inflater = LayoutInflater.from(tContext);
-
     }
 
     @Override
@@ -41,18 +35,9 @@ public class IngredientsAdapter  extends RecyclerView.Adapter <IngredientsAdapte
     @Override
     public void onBindViewHolder(IngredientsAdapter.MyViewHolder holder, int position) {
         Ingredient current = data.get(position);
-//            TextView tvIngredient = (TextView) convertView.findViewById(R.id.tv_ingredient_item);
-//            TextView tvMeasure = (TextView) convertView.findViewById(R.id.tv_ingredient_measure);
-//            TextView tvQuant = (TextView) convertView.findViewById(R.id.tv_ingredient_quantity);
-
-//            tvIngredient.setText((CharSequence) recipe.getIngredients().get(position).getIngredient());
-//            tvMeasure.setText((CharSequence) recipe.getIngredients().get(position).getMeasure());
-//            tvQuant.setText(String.valueOf(recipe.getIngredients().get(position).getQuantity()));
-
         holder.tvIngredient.setText(current.getIngredient());
         holder.tvMeasure.setText(current.getMeasure());
         holder.tvQuant.setText(String.valueOf(current.getQuantity()));
-
     }
     public void setStepsData (List<Ingredient> mData){
         data = mData;
@@ -70,24 +55,11 @@ public class IngredientsAdapter  extends RecyclerView.Adapter <IngredientsAdapte
         private TextView tvMeasure;
         private TextView tvQuant;
 
-        //            TextView tvIngredient = (TextView) convertView.findViewById(R.id.tv_ingredient_item);
-//            TextView tvMeasure = (TextView) convertView.findViewById(R.id.tv_ingredient_measure);
-//            TextView tvQuant = (TextView) convertView.findViewById(R.id.tv_ingredient_quantity);
-//            tvIngredient.setText((CharSequence) recipe.getIngredients().get(position).getIngredient());
-//            tvMeasure.setText((CharSequence) recipe.getIngredients().get(position).getMeasure());
-//            tvQuant.setText(String.valueOf(recipe.getIngredients().get(position).getQuantity()));
-
-
         public MyViewHolder(View itemView) {
             super(itemView);
-
             tvIngredient = (TextView) itemView.findViewById(R.id.tv_ingredient_item);
             tvMeasure = (TextView) itemView.findViewById(R.id.tv_ingredient_measure);
             tvQuant = (TextView) itemView.findViewById(R.id.tv_ingredient_quantity);
-
-            //            stepDescription = (TextView) itemView.findViewById(R.id.tv_step_description);
-//            stepShortDescription = (TextView) itemView.findViewById(R.id.tv_step_short_description);
-//            stepNumber = (TextView) itemView.findViewById(R.id.tv_step_id);
         }
     }
 }

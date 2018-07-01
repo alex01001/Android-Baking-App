@@ -40,7 +40,6 @@ public class Recipe implements Parcelable {
         this.steps = new ArrayList<>();
     }
 
-    // Parcelable
     @Override
     public int describeContents() {
         return 0;

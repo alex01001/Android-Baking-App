@@ -12,31 +12,24 @@ import com.example.user.bakingapp.model.Recipe;
 import com.example.user.bakingapp.Prefs;
 import com.example.user.bakingapp.R;
 
-/**
- * Implementation of App Widget functionality.
- */
 public class RecipeWidgetProvider extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-        android.util.Log.i("wqq1", "updating widget");
         Recipe recipe = Prefs.loadRecipe(context);
         if (recipe != null) {
-            android.util.Log.i("wqq1", "updating widget2 " + recipe.getName() + " widget " + String.valueOf(appWidgetId));
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
-            // Construct the RemoteViews object
+
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
 
             views.setTextViewText(R.id.recipe_widget_name_text, recipe.getName());
-            // Widgets allow click handlers to only launch pending intents
             views.setOnClickPendingIntent(R.id.recipe_widget_name_text, pendingIntent);
 
-            // Initialize the list view
             Intent intent = new Intent(context, MyWidgetService.class);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-            // Bind the remote adapter
+
             views.setRemoteAdapter(R.id.recipe_widget_listview, intent);
-            // Instruct the widget manager to update the widget
+
             appWidgetManager.updateAppWidget(appWidgetId, views);
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.recipe_widget_listview);
         }
@@ -44,8 +37,6 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // There may be multiple widgets active, so update all of them
-        android.util.Log.i("wqq1", "onUpdate");
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
@@ -54,7 +45,6 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     public static void updateAppWidgets(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
-//            updateAppWidget(context, appWidgetManager, 0);
         }
     }
 

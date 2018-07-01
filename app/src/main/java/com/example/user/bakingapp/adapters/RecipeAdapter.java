@@ -42,23 +42,6 @@ public class RecipeAdapter extends RecyclerView.Adapter <RecipeAdapter.MyViewHol
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Recipe current = data.get(position);
         holder.recipeName.setText(current.getName());
-
-
-        //        URL posterURL = NetworkTools.buildPosterUrl(current.getPosterPath());
-//        Picasso.with(context).load(posterURL.toString()).fit().into(holder.posterImg);
-//        if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-//            ViewGroup.LayoutParams lp;
-//            lp = holder.posterImg.getLayoutParams();
-//            lp.height = 270* Resources.getSystem().getDisplayMetrics().widthPixels/(4*185)-16;
-//
-//        }
-//        else{
-//            ViewGroup.LayoutParams lp;
-//            lp = holder.posterImg.getLayoutParams();
-//            lp.height = 270*Resources.getSystem().getDisplayMetrics().widthPixels/(2*185)-16;
-//
-//        }
-
     }
     public void setRecipeData (List<Recipe> mData){
         data = mData;

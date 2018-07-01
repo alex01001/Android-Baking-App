@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -28,18 +29,17 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
 
     @BindView(R.id.rv_steps_list) RecyclerView mRecyclerViewSteps;
     @BindView(R.id.rv_ingredients_list) RecyclerView mRecyclerViewIngredients;
-    @BindView(R.id.widget_switch) Switch widgetSwitch;
+    @BindView(R.id.tv_recipe_intro) TextView recipeIntro;
 
 
     private boolean twoPaneMode;
 
 
 
-    //    @BindView(R.id.iv_thumbnail)
-//    ImageView dvThumbnail;
+//        @BindView(R.id.iv_thumbnail)
+//        ImageView dvThumbnail;
 //    @BindView(R.id.tv_ingredients_description) TextView ingredientsDescription;
 //    @BindView(R.id.lv_ingredients) ListView ingredientsList;
-    @BindView(R.id.tv_recipe_intro) TextView recipeIntro;
 
 //    @BindView(R.id.tv_release_date) TextView dvReleaseDate;
 //    @BindView(R.id.tv_user_rating) TextView dvRating;
@@ -82,7 +82,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
         }
 
 
-        recipeIntro.setText("Hello my friend, let's make " + recipe.getName() +"!");
+        recipeIntro.setText(R.string.recipe_intro + recipe.getName() +"!");
         //ingredientsDescription.setText(recipe.toString());
         IngredientsAdapter ingredientsAdapter = new IngredientsAdapter(getBaseContext());
 //        ingredientsList.setAdapter(ingredientsAdapter);
@@ -109,7 +109,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
         }else {
             twoPaneMode = false;
         }
-        android.util.Log.i("wqq1", "test");
 
         MyWidgetService.updateWidget(getBaseContext(), recipe);
 
@@ -158,7 +157,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
             android.util.Log.i("wqq", "checked2");
             MyWidgetService.updateWidget(this, recipe);
         }
-
     }
 
     public void onBtnClicked(){
@@ -166,7 +164,5 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
         MyWidgetService.updateWidget(this, recipe);
 
     }
-
-
 }
 

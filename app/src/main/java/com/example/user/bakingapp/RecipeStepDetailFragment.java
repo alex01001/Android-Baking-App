@@ -35,8 +35,8 @@ import butterknife.Unbinder;
 
 public class RecipeStepDetailFragment extends Fragment {
     public static final String STEP_KEY = "step";
-    private static final String POSITION_KEY = "pos_k";
-    private static final String PLAY_WHEN_READY_KEY = "play_when_ready_k";
+    private static final String POSITION_KEY = "pos";
+    private static final String PLAY_WHEN_READY_KEY = "play_when_ready";
 
     @BindView(R.id.instructions_container)
     NestedScrollView mInstructionsContainer;

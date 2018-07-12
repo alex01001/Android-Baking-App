@@ -13,8 +13,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
-public class Utils {
+public final class Utils {
     public static final String PREFS_NAME = "prefs";
+
+    private Utils(){}
 
     public static void saveRecipe(Context context, Recipe recipe) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit();

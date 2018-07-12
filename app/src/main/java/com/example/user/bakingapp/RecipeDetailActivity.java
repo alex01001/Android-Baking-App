@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +36,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
 
     private StepsAdapter stepsAdapter;
     Recipe recipe;
+
+    public int mScrollPosition;
 
     public ArrayList<Step> stepList;
     public ArrayList<Ingredient> ingredientsList;
@@ -85,38 +88,25 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
         MyWidgetService.updateWidget(getBaseContext(), recipe);
 
 
-        // Show the Up button in the action bar.
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(recipe.getName());
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-//
-//        StepsFragmentPagerAdapter adapter = new StepsFragmentPagerAdapter(getApplicationContext(), recipe.getSteps(), getSupportFragmentManager());
-//
-//        vpRecipeStep.setAdapter(adapter);
-//        tabRecipeStep.setupWithViewPager(vpRecipeStep);
-//        vpRecipeStep.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//                if (actionBar != null) {
-//                    actionBar.setTitle(recipe.getSteps().get(position).getShortDescription());
-//                }
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//
-//            }
-//        });
-//        vpRecipeStep.setCurrentItem(mStepSelectedPosition);
+
+    }
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mScrollPosition = ((LinearLayoutManager)mRecyclerViewSteps.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((LinearLayoutManager) mRecyclerViewSteps.getLayoutManager()).scrollToPosition(mScrollPosition);
     }
 
     public void showStepDetails(int pos){
@@ -160,7 +150,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        Logger.d("onDestroy");
     }
 
 

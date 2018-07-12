@@ -46,6 +46,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
 
         ButterKnife.bind(this);
 
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.detail_toolbar2);
+        setSupportActionBar(toolbar);
+
+
         Intent intent = getIntent();
         if (intent.hasExtra(RECIPE_KEY)) {
             recipe = getIntent().getParcelableExtra(RECIPE_KEY);
@@ -81,6 +85,38 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
         MyWidgetService.updateWidget(getBaseContext(), recipe);
 
 
+        // Show the Up button in the action bar.
+        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(recipe.getName());
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+//
+//        StepsFragmentPagerAdapter adapter = new StepsFragmentPagerAdapter(getApplicationContext(), recipe.getSteps(), getSupportFragmentManager());
+//
+//        vpRecipeStep.setAdapter(adapter);
+//        tabRecipeStep.setupWithViewPager(vpRecipeStep);
+//        vpRecipeStep.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//                if (actionBar != null) {
+//                    actionBar.setTitle(recipe.getSteps().get(position).getShortDescription());
+//                }
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//
+//            }
+//        });
+//        vpRecipeStep.setCurrentItem(mStepSelectedPosition);
+
+
     }
 
     public void showStepDetails(int pos){
@@ -114,5 +150,19 @@ public class RecipeDetailActivity extends AppCompatActivity implements StepsAdap
             startActivity(intent);
         }
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        Logger.d("onDestroy");
+    }
+
+
 }
 

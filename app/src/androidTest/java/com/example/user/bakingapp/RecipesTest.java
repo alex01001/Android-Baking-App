@@ -50,7 +50,7 @@ public class RecipesTest {
 
 
     @Test
-    public void clickRecyclerViewItemHasIntentWithAKey() {
+    public void clickOnRecipeOpensRecipeWithProperKey() {
         // this test checks if the recipe key is transferred to the recipe detail screen
         Intents.init();
         onView(withId(R.id.rv_recipes_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
@@ -60,6 +60,12 @@ public class RecipesTest {
 
     }
 
+    @Test
+    public void ingredientsListIsVisible() {
+        onView(withId(R.id.rv_recipes_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.rv_ingredients_list)).check(matches(isDisplayed()));
+
+    }
 
 
  }

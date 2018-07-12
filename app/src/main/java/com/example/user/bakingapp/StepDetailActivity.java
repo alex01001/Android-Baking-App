@@ -28,7 +28,7 @@ public class StepDetailActivity extends AppCompatActivity {
     private int mStepSelectedPosition;
 
     public static final String RECIPE_KEY = "recipe";
-    public static final String STEP_SELECTED_KEY = "step";
+    public static final String STEP_KEY = "step";
 
 
     @Override
@@ -42,8 +42,8 @@ public class StepDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null && bundle.containsKey(RECIPE_KEY) && bundle.containsKey(STEP_SELECTED_KEY)) {
-            mStepSelectedPosition = bundle.getInt(STEP_SELECTED_KEY);
+        if (bundle != null && bundle.containsKey(RECIPE_KEY) && bundle.containsKey(STEP_KEY)) {
+            mStepSelectedPosition = bundle.getInt(STEP_KEY);
             recipe = bundle.getParcelable(RECIPE_KEY);
         } else {
             finish();
